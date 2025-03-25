@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const TelegramBot = require('node-telegram-bot-api');
-const TOKEN = process.env.TG_BOT_TOKEN || 'no';
+const TOKEN = process.env.TG_BOT_TOKEN || "fail";
 const PASSWORD = process.env.TG_BOT_RECEIVER_PASSWORD || "SOME_MY_PASSWORD"; // Задайте свой пароль
 
 const bot = new TelegramBot(TOKEN, { polling: true });
@@ -55,6 +55,16 @@ app.post('/message', (req, res) => {
     if(!ok) {
         res.statusCode = 400;
         res.json({status: "error", message: "bad fields"});
+
+        return;
+    }
+
+    const ok2 = name.length < 100 && meth.length < 20 && contact.length < 100 && message.length < 2000;
+
+    if(!ok2) {
+        res.statusCode = 400;
+        res.json({status: "error", message: "bad fields"});
+
         return;
     }
     
