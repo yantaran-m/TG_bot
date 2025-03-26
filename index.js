@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const cors = require("cors");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -51,6 +52,7 @@ function sendMsg(name, contactMethod, contact, message) {
 }
 
 app.use(express.json());
+app.use(cors()); // Allow frontend
 
 app.post('/message', (req, res) => {
     const data = req.body;
