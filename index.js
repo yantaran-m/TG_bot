@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -10,11 +11,19 @@ const PASSWORD = process.env.TG_BOT_RECEIVER_PASSWORD || "SOME_MY_PASSWORD"; // 
 const bot = new TelegramBot(TOKEN, { polling: true });
 const authorizedUsers = new Set();
 
+try {
+    const data = JSON.parse(fs.readFileSync("authorizeduser.json"));
+    authorizedUsers.add(data.id);
+} catch (error) {
+    
+}
+
 bot.onText(/\/pw (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
     const inputPassword = match[1];
 
     if (inputPassword === PASSWORD) {
+        fs.writeFileSync("authorizeduser.json", JSON.stringify({id: chatId}));
         authorizedUsers.add(chatId);
         bot.sendMessage(chatId, 'AUTHORIZED!');
     } else {
