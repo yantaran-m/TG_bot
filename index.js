@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 const TelegramBot = require('node-telegram-bot-api');
 const TOKEN = process.env.TG_BOT_TOKEN || "fail";
+// const TOKEN = "7616108323:AAHQOvC99z0RGz9QODMN62AgAfb9JKBjskU";
 const PASSWORD = process.env.TG_BOT_RECEIVER_PASSWORD || "SOME_MY_PASSWORD"; // Задайте свой пароль
 
 const bot = new TelegramBot(TOKEN, { polling: true });
@@ -28,6 +29,7 @@ bot.onText(/\/pw (.+)/, (msg, match) => {
         authorizedUsers.add(chatId);
         bot.sendMessage(chatId, 'AUTHORIZED!');
     } else {
+        console.log(chatId, " => ", "WRONG PASSWORD");
         bot.sendMessage(chatId, 'Wrong password');
     }
 });
@@ -40,15 +42,15 @@ bot.onText(/\/check/, (msg, match) => {
         return;
     }
 
-    authorizedUsers.forEach(chatId => {
-        bot.sendMessage(chatId, "Working...");
-    });
+    // authorizedUsers.forEach(chatId => {
+        bot.sendMessage(5989248372, "Working...");
+    // });
 });
 
 function sendMsg(name, contactMethod, contact, message) {
-    authorizedUsers.forEach(chatId => {
-        bot.sendMessage(chatId, `***NEW MESSAGE***\n\nName:    ${name}\nContact: ${contactMethod} ${contact}\n\n${message}`);
-    });
+    // authorizedUsers.forEach(chatId => {
+        bot.sendMessage(5989248372, `***NEW MESSAGE***\n\nName:    ${name}\nContact: ${contactMethod} ${contact}\n\n${message}`);
+    // });
 }
 
 app.use(express.json());
